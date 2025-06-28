@@ -40,10 +40,56 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Anchor
-/anchor/target/debug
-/anchor/target/deploy
-/anchor/target/release
-/anchor/target/sbf-solana-solana
-/anchor/target/test-ledger
-/anchor/target/.rustc_info.json
+# Anchor & Solana
+/anchor/target/
+/anchor/test-ledger/
+anchor/target/
+anchor/test-ledger/
+
+# Generated IDL files (these get regenerated on build)
+/anchor/target/idl/
+/anchor/target/types/
+anchor/target/idl/
+anchor/target/types/
+
+# Rust build artifacts  
+**/.rustc_info.json
+target/
+
+# Solana CLI generated files
+.anchor/
+.solana/
+test-ledger/
+validator-ledger/
+
+# Anchor generated TypeScript (comment out if you want to commit these)
+# /anchor/src/**-exports.ts
+# anchor/src/**-exports.ts
+
+# Local validator data
+.ledger/
+ledger/
+
+# IDE and editor files
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files (additional to the one above)
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+.tmp/

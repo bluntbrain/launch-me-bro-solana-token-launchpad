@@ -1,0 +1,23 @@
+{
+  "name": "My Awesome Token",
+  "symbol": "MAT",
+  "description": "A revolutionary token for the future",
+  "image": "https://example.com/token-image.png",
+  "external_url": "https://mytoken.com",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Utility"
+    },
+    {
+      "trait_type": "Category",
+      "value": "DeFi"
+    }
+  ],
+  "properties": {
+    "website": "https://mytoken.com",
+    "twitter": "https://twitter.com/mytoken",
+    "telegram": "https://t.me/mytoken",
+    "discord": "https://discord.gg/mytoken"
+  }
+} 
