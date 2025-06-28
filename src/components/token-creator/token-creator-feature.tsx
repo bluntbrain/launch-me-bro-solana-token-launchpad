@@ -24,6 +24,8 @@ import { Input } from '../ui/input'
 import { Label } from '../ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card'
 import { useTransactionToast } from '../use-transaction-toast'
+import { ImageUpload } from './image-upload'
+import Image from 'next/image'
 
 interface TokenForm {
   name: string
@@ -36,7 +38,7 @@ interface TokenForm {
 export function TokenCreatorFeature() {
   const { connection } = useConnection()
   const { publicKey, sendTransaction } = useWallet()
-  const transactionToast = useTransactionToast()
+  const { transactionToast } = useTransactionToast()
 
   const [isLoading, setIsLoading] = useState(false)
   const [createdMint, setCreatedMint] = useState<string | null>(null)
@@ -44,7 +46,7 @@ export function TokenCreatorFeature() {
     name: '',
     symbol: '',
     uri: '',
-    decimals: 6,
+    decimals: 9,
     description: '',
   })
 
@@ -58,7 +60,6 @@ export function TokenCreatorFeature() {
     if (!form.symbol.trim()) return 'Token symbol is required'
     if (form.symbol.length > 10) return 'Token symbol must be 10 characters or less'
     if (!form.uri.trim()) return 'Token URI is required'
-    if (form.uri.length > 200) return 'Token URI must be 200 characters or less'
     if (form.decimals < 0 || form.decimals > 9) return 'Decimals must be between 0 and 9'
     return null
   }
@@ -174,7 +175,7 @@ export function TokenCreatorFeature() {
         name: '',
         symbol: '',
         uri: '',
-        decimals: 6,
+        decimals: 9,
         description: '',
       })
     } catch (error) {
@@ -192,7 +193,7 @@ export function TokenCreatorFeature() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="container max-w-2xl mx-auto py-8">
       <Card>
         <CardHeader>
           <CardTitle>Create Token with Metadata</CardTitle>
@@ -228,17 +229,17 @@ export function TokenCreatorFeature() {
           </div>
 
           <div>
-            <Label htmlFor="uri">Metadata URI</Label>
-            <Input
-              id="uri"
-              placeholder="https://example.com/metadata.json"
-              value={form.uri}
-              onChange={(e) => handleInputChange('uri', e.target.value)}
-              maxLength={200}
-            />
-            <p className="text-sm text-muted-foreground mt-1">
-              Link to JSON metadata file. {form.uri.length}/200 characters
-            </p>
+            <Label>Token Image</Label>
+            <div className="flex items-start gap-4">
+              <div className="flex-1">
+                <ImageUpload onImageUploaded={(url) => handleInputChange('uri', url)} />
+              </div>
+              {form.uri && (
+                <div className="w-24 h-24 relative rounded-lg overflow-hidden border border-gray-200">
+                  <Image src={form.uri} alt="Token preview" fill className="object-cover" unoptimized />
+                </div>
+              )}
+            </div>
           </div>
 
           <div>
@@ -270,7 +271,7 @@ export function TokenCreatorFeature() {
       </Card>
 
       {createdMint && (
-        <Card>
+        <Card className="mt-6">
           <CardHeader>
             <CardTitle>Token Created Successfully! 🎉</CardTitle>
           </CardHeader>

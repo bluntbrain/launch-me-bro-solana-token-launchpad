@@ -11,3 +11,11 @@ export function ellipsify(str = '', len = 4, delimiter = '..') {
 
   return strLen >= limit ? str.substring(0, len) + delimiter + str.substring(strLen - len, strLen) : str
 }
+
+export function createMetadataUrl(content: string): string {
+  // Base64 encode the content to handle special characters
+  const encodedContent = Buffer.from(content).toString('base64');
+  
+  // Create a data URL with the encoded content
+  return `data:application/json;base64,${encodedContent}`;
+}
