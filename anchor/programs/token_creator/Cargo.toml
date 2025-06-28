@@ -1,0 +1,15 @@
+[package]
+name = "token_creator"
+version = "0.1.0"
+edition = "2021"
+
+[features]
+no-entrypoint = []
+no-idl = []
+no-log-ix-name = []
+cpi = ["no-entrypoint"]
+default = []
+
+[dependencies]
+anchor-lang = { version = "0.31.1", features = ["init-if-needed"] }
+anchor-spl = "0.31.1" 

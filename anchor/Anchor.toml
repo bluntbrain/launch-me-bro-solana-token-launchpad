@@ -1,5 +1,6 @@
 [toolchain]
 package_manager = "yarn"
+anchor_version = "0.31.1"
 
 [features]
 resolution = true
@@ -7,6 +8,7 @@ skip-lint = false
 
 [programs.localnet]
 counter = "FqzkXZdwYjurnUKetJCAvaUw5WAqbwzU6gZEwydeEfqS"
+token_creator = "TokenCreator1111111111111111111111111111111"
 
 [registry]
 url = "https://api.apr.dev"
