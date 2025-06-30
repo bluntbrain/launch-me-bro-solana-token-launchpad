@@ -244,8 +244,12 @@ export function ImageUpload({ onImageUploaded }: ImageUploadProps) {
             >
               Cancel
             </Button>
-            <Button onClick={handleCrop} disabled={isUploading} className="flex-1 solana-button">
-              <span className="solana-button-content">{isUploading ? 'Uploading...' : 'Upload'}</span>
+            <Button
+              onClick={handleCrop}
+              disabled={isUploading}
+              className="flex-1 bg-white text-black border border-gray-300 hover:bg-gray-50"
+            >
+              {isUploading ? 'Uploading...' : 'Upload'}
             </Button>
           </div>
           {error && <p className="text-sm text-red-500">{error}</p>}

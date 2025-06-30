@@ -33,6 +33,10 @@ interface TokenForm {
   uri: string
   decimals: number
   description: string
+  telegram: string
+  twitter: string
+  website: string
+  youtube: string
 }
 
 export function TokenCreatorFeature() {
@@ -48,6 +52,10 @@ export function TokenCreatorFeature() {
     uri: '',
     decimals: 9,
     description: '',
+    telegram: '',
+    twitter: '',
+    website: '',
+    youtube: '',
   })
 
   const handleInputChange = (field: keyof TokenForm, value: string | number) => {
@@ -88,13 +96,20 @@ export function TokenCreatorFeature() {
       const updateAuthority = publicKey
 
       // Metadata to store in Mint Account
+      const additionalMetadata: [string, string][] = []
+      if (form.description) additionalMetadata.push(['description', form.description])
+      if (form.telegram) additionalMetadata.push(['telegram', form.telegram])
+      if (form.twitter) additionalMetadata.push(['twitter', form.twitter])
+      if (form.website) additionalMetadata.push(['website', form.website])
+      if (form.youtube) additionalMetadata.push(['youtube', form.youtube])
+
       const metaData: TokenMetadata = {
         updateAuthority: updateAuthority,
         mint: mint,
         name: form.name,
         symbol: form.symbol,
         uri: form.uri,
-        additionalMetadata: form.description ? [['description', form.description]] : [],
+        additionalMetadata,
       }
 
       // Calculate account size and rent
@@ -147,17 +162,27 @@ export function TokenCreatorFeature() {
         initializeMetadataInstruction,
       )
 
-      // Add description if provided
-      if (form.description) {
-        const updateFieldInstruction = createUpdateFieldInstruction({
-          programId: TOKEN_2022_PROGRAM_ID,
-          metadata: mint,
-          updateAuthority: updateAuthority,
-          field: 'description',
-          value: form.description,
-        })
-        transaction.add(updateFieldInstruction)
-      }
+      // Add additional metadata fields if provided
+      const fieldsToAdd = [
+        { field: 'description', value: form.description },
+        { field: 'telegram', value: form.telegram },
+        { field: 'twitter', value: form.twitter },
+        { field: 'website', value: form.website },
+        { field: 'youtube', value: form.youtube },
+      ]
+
+      fieldsToAdd.forEach(({ field, value }) => {
+        if (value) {
+          const updateFieldInstruction = createUpdateFieldInstruction({
+            programId: TOKEN_2022_PROGRAM_ID,
+            metadata: mint,
+            updateAuthority: updateAuthority,
+            field,
+            value,
+          })
+          transaction.add(updateFieldInstruction)
+        }
+      })
 
       // Send transaction
       const signature = await sendTransaction(transaction, connection, {
@@ -177,6 +202,10 @@ export function TokenCreatorFeature() {
         uri: '',
         decimals: 9,
         description: '',
+        telegram: '',
+        twitter: '',
+        website: '',
+        youtube: '',
       })
     } catch (error) {
       console.error('Error creating token:', error)
@@ -250,6 +279,50 @@ export function TokenCreatorFeature() {
               value={form.description}
               onChange={(e) => handleInputChange('description', e.target.value)}
             />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="telegram">Telegram (Optional)</Label>
+              <Input
+                id="telegram"
+                placeholder="https://t.me/yourgroup"
+                value={form.telegram}
+                onChange={(e) => handleInputChange('telegram', e.target.value)}
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="twitter">Twitter (Optional)</Label>
+              <Input
+                id="twitter"
+                placeholder="https://twitter.com/yourhandle"
+                value={form.twitter}
+                onChange={(e) => handleInputChange('twitter', e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="website">Website (Optional)</Label>
+              <Input
+                id="website"
+                placeholder="https://yourwebsite.com"
+                value={form.website}
+                onChange={(e) => handleInputChange('website', e.target.value)}
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="youtube">YouTube (Optional)</Label>
+              <Input
+                id="youtube"
+                placeholder="https://youtube.com/@yourchannel"
+                value={form.youtube}
+                onChange={(e) => handleInputChange('youtube', e.target.value)}
+              />
+            </div>
           </div>
 
           <div>
